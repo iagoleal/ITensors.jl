@@ -8,7 +8,7 @@ include(joinpath(@__DIR__, "utils", "util.jl"))
 function basicRandomMPO(sites; dim=4)
   M = MPO(sites)
   N = length(M)
-  links = [Index(dim, "n=$(n-1),Link") for n in 1:(N + 1)]
+  links = [Index(dim, "n=$(n-1),Link") for n in 1:(N+1)]
   for n in 1:N
     M[n] = randomITensor(links[n], sites[n], sites[n]', links[n + 1])
   end
@@ -106,7 +106,7 @@ end
     end
     @test phiKpsi[] ≈ inner(phi', K, psi)
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badpsi = randomMPS(badsites)
     @test_throws DimensionMismatch inner(phi', K, badpsi)
 
@@ -115,12 +115,12 @@ end
       mpo_tensors = ITensor[ITensor() for ii in 1:N]
       mps_tensors = ITensor[ITensor() for ii in 1:N]
       mps_tensors2 = ITensor[ITensor() for ii in 1:N]
-      mpo_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N - 1)]
-      mps_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N - 1)]
+      mpo_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N-1)]
+      mps_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N-1)]
       mpo_tensors[1] = randomITensor(mpo_link_inds[1], sites[1], sites[1]')
       mps_tensors[1] = randomITensor(mps_link_inds[1], sites[1])
       mps_tensors2[1] = randomITensor(mps_link_inds[1], sites[1])
-      for ii in 2:(N - 1)
+      for ii in 2:(N-1)
         mpo_tensors[ii] = randomITensor(
           mpo_link_inds[ii], mpo_link_inds[ii - 1], sites[ii], sites[ii]'
         )
@@ -184,7 +184,7 @@ end
 
     @test phiJdagKpsi[] ≈ inner(J, phi, K, psi)
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badpsi = randomMPS(badsites)
     @test_throws DimensionMismatch inner(J, phi, K, badpsi)
 
@@ -226,7 +226,7 @@ end
     )
     @test dist ≈ error_contract(phi, K, psi)
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badpsi = randomMPS(badsites)
     # Apply K to phi and check that error_contract is close to 0.
     Kphi = contract(K, phi; method="naive", cutoff=1E-8)
@@ -250,7 +250,7 @@ end
     @test inner(phi', psi_out) ≈ inner(phi', K, psi)
     @test_throws MethodError contract(K, psi; method="fakemethod")
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badpsi = randomMPS(badsites)
     @test_throws DimensionMismatch contract(K, badpsi)
 
@@ -259,12 +259,12 @@ end
       mpo_tensors = ITensor[ITensor() for ii in 1:N]
       mps_tensors = ITensor[ITensor() for ii in 1:N]
       mps_tensors2 = ITensor[ITensor() for ii in 1:N]
-      mpo_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N - 1)]
-      mps_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N - 1)]
+      mpo_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N-1)]
+      mps_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N-1)]
       mpo_tensors[1] = randomITensor(mpo_link_inds[1], sites[1], sites[1]')
       mps_tensors[1] = randomITensor(mps_link_inds[1], sites[1])
       mps_tensors2[1] = randomITensor(mps_link_inds[1], sites[1])
-      for ii in 2:(N - 1)
+      for ii in 2:(N-1)
         mpo_tensors[ii] = randomITensor(
           mpo_link_inds[ii], mpo_link_inds[ii - 1], sites[ii], sites[ii]'
         )
@@ -374,7 +374,7 @@ end
     psi_kl_out = contract(K, contract(L, psil; maxdim=1); maxdim=1)
     @test inner(psik, KL, psil) ≈ inner(psik, psi_kl_out) atol = 5e-3
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badL = randomMPO(badsites)
     @test_throws DimensionMismatch contract(K, badL)
   end
@@ -410,7 +410,7 @@ end
     psi_kl_out = *(K, *(L, psil; maxdim=1); maxdim=1)
     @test dot(psik, KL, psil) ≈ psik ⋅ psi_kl_out atol = 5e-3
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badL = randomMPO(badsites)
     @test_throws DimensionMismatch K * badL
   end
@@ -555,7 +555,7 @@ end
     ψ = orthogonalize(ψ0, 2)
     A = prod(ITensors.data(ψ)[2:(N - 1)])
     randn!(A)
-    ψ[2:(N - 1), orthocenter=3] = A
+    ψ[2:(N - 1), orthocenter = 3] = A
     @test prod(ψ) ≈ ψ[1] * A * ψ[N]
     @test maxlinkdim(ψ) == 4
     @test ITensors.orthocenter(ψ) == 3
@@ -650,7 +650,7 @@ end
     N = 6
     s = siteinds("S=1/2", N)
     H = MPO(s, "Id")
-    H2 = MPO([H[j] * H[j + 1] for j in 1:2:(N - 1)])
+    H2 = MPO([H[j] * H[j + 1] for j in 1:2:(N-1)])
     d = dim(s[1])
     @test tr(H) ≈ d^N
     @test tr(H2) ≈ d^N
@@ -689,7 +689,7 @@ end
     N = 8
     s = siteinds("S=1/2", N)
     a = OpSum()
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       a .+= 0.5, "S+", j, "S-", j + 1
       a .+= 0.5, "S-", j, "S+", j + 1
       a .+= "Sz", j, "Sz", j + 1
@@ -707,7 +707,7 @@ end
     N = 8
     s = siteinds("S=1/2", N)
     a = OpSum()
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       a .+= 0.5, "S+", j, "S-", j + 1
       a .+= 0.5, "S-", j, "S+", j + 1
       a .+= "Sz", j, "Sz", j + 1
@@ -721,7 +721,7 @@ end
     s = siteinds(H2; plev=1)
     C = combiner.(s; tags="X")
     H2 .*= C
-    H2H2 = prime(H2; tags=!ts"X") * dag(H2)
+    H2H2 = prime(H2; tags=(!ts"X")) * dag(H2)
     @test @disable_warn_order prod(HH) ≈ prod(H2H2)
   end
 
@@ -735,7 +735,7 @@ end
       l = [Index(chi1, "n=$n,Link") for n in 1:N]
       M = MPO(N)
       M[1] = randomITensor(dag(s[1]), l[1], s'[1])
-      for n in 2:(N - 1)
+      for n in 2:(N-1)
         M[n] = randomITensor(dag(s[n]), dag(l[n - 1]), l[n], s'[n])
       end
       M[N] = randomITensor(dag(s[N]), dag(l[N - 1]), s'[N])

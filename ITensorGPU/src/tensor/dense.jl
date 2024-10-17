@@ -4,7 +4,7 @@ function contract!!(
   T1::DenseTensor{<:Number,N1},
   labelsT1::NTuple{N1},
   T2::DenseTensor{<:Number,N2},
-  labelsT2::NTuple{N2},
+  labelsT2::NTuple{N2};
   α::Number=1,
   β::Number=0,
 ) where {NR,N1,N2}
@@ -53,7 +53,7 @@ function _big_contract!!(
   T1::DenseTensor{ElT1,N1},
   labelsT1,
   T2::DenseTensor{ElT2,N2},
-  labelsT2,
+  labelsT2;
   α::Number=1,
   β::Number=0,
 ) where {ElT1,ElT2,N1,N2,NR}
@@ -68,7 +68,7 @@ function _big_contract!(
   CT::DenseTensor{El,NC},
   AT::DenseTensor{El,NA},
   BT::DenseTensor{El,NB},
-  props::ContractionProperties,
+  props::ContractionProperties;
   α::Number=one(El),
   β::Number=zero(El),
 ) where {El,NC,NA,NB}
@@ -203,7 +203,7 @@ function _blasmg_contract!(
   CT::DenseTensor{El,NC},
   AT::DenseTensor{El,NA},
   BT::DenseTensor{El,NB},
-  props::ContractionProperties,
+  props::ContractionProperties;
   α::Number=one(El),
   β::Number=zero(El),
 ) where {El,NC,NA,NB}

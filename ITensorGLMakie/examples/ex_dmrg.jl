@@ -6,8 +6,8 @@ sites(n) = Index([QN("Sz", 0) => 1, QN("Sz", 1) => 1]; tags="S=1/2,Site,n=$n")
 l(n) = Index([QN("Sz", 0) => 10, QN("Sz", 1) => 10]; tags="Link,l=$n")
 h(n) = Index([QN("Sz", 0) => 5, QN("Sz", 1) => 5]; tags="ham,Link,l=$n")
 s⃗ = [sites(n) for n in 1:N]
-l⃗ = [l(n) for n in 1:(N - 1)]
-h⃗ = [h(n) for n in 1:(N - 1)]
+l⃗ = [l(n) for n in 1:(N-1)]
+h⃗ = [h(n) for n in 1:(N-1)]
 
 # Add some more indices between two of the tensors
 x = Index([QN("Sz", 0) => 2]; tags="X")

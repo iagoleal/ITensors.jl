@@ -30,14 +30,14 @@ U = 1.0
 
 # Make the free fermion Hamiltonian for the up spins
 os_up = OpSum()
-for n in 1:(N - 1)
+for n in 1:(N-1)
   os_up .+= -t, "Cdagup", n, "Cup", n + 1
   os_up .+= -t, "Cdagup", n + 1, "Cup", n
 end
 
 # Make the free fermion Hamiltonian for the down spins
 os_dn = OpSum()
-for n in 1:(N - 1)
+for n in 1:(N-1)
   os_dn .+= -t, "Cdagdn", n, "Cdn", n + 1
   os_dn .+= -t, "Cdagdn", n + 1, "Cdn", n
 end
@@ -60,7 +60,7 @@ println("Making free fermion starting MPS")
 
 # The total non-interacting part of the Hamiltonian
 os_noninteracting = OpSum()
-for n in 1:(N - 1)
+for n in 1:(N-1)
   os_noninteracting .+= -t, "Cdagup", n, "Cup", n + 1
   os_noninteracting .+= -t, "Cdagdn", n, "Cdn", n + 1
   os_noninteracting .+= -t, "Cdagup", n + 1, "Cup", n
@@ -73,7 +73,7 @@ H_noninteracting = MPO(os_noninteracting, s)
 
 # The total interacting Hamiltonian
 os_interacting = OpSum()
-for n in 1:(N - 1)
+for n in 1:(N-1)
   os_interacting .+= -t, "Cdagup", n, "Cup", n + 1
   os_interacting .+= -t, "Cdagdn", n, "Cdn", n + 1
   os_interacting .+= -t, "Cdagup", n + 1, "Cup", n

@@ -31,7 +31,7 @@ isforward(direction::Base.ReverseOrdering) = false
 isreverse(direction) = !isforward(direction)
 
 function sweep_bonds(direction::Base.ForwardOrdering, n::Int; ncenter::Int)
-  return 1:(n - ncenter + 1)
+  return 1:(n-ncenter+1)
 end
 
 function sweep_bonds(direction::Base.ReverseOrdering, n::Int; ncenter::Int)

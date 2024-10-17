@@ -10,7 +10,7 @@ s = siteinds("S=1/2", N; conserve_qns=true)
 χ = 2
 ψ = randomMPS(s, n -> isodd(n) ? "↑" : "↓"; linkdims=χ)
 ℋ = OpSum()
-for n in 1:(N - 1)
+for n in 1:(N-1)
   ℋ .+= 0.5, "S+", n, "S-", n + 1
   ℋ .+= 0.5, "S-", n, "S+", n + 1
   ℋ .+= "Sz", n, "Sz", n + 1

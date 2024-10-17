@@ -20,12 +20,12 @@ let
   @show t, U, Delta
   # Free fermion Hamiltonian
   os_h = OpSum()
-  for n in 1:(N - 1)
+  for n in 1:(N-1)
     os_h .+= -t, "Cdag", n, "C", n + 1
     os_h .+= -t, "Cdag", n + 1, "C", n
   end
   os_p = OpSum()
-  for n in 1:(N - 1)
+  for n in 1:(N-1)
     os_p .+= Delta / 2.0, "Cdag", n, "Cdag", n + 1
     os_p .+= -Delta / 2.0, "Cdag", n + 1, "Cdag", n
     os_p .+= -Delta / 2.0, "C", n, "C", n + 1

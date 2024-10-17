@@ -123,7 +123,7 @@ function QN(qvs...)
   end
   Nvals = length(qvs)
   sort!(@view m[1:Nvals]; by=name, alg=InsertionSort)
-  for n in 1:(length(qvs) - 1)
+  for n in 1:(length(qvs)-1)
     if name(m[n]) == name(m[n + 1])
       error("Duplicate name \"$(name(m[n]))\" in QN")
     end
@@ -250,7 +250,7 @@ function (a::QN + b::QN)
         ma[na] = ma[na] + b[nb]
         break
       elseif (bname < aname) && (na == 1 || bname > name(ma[na - 1]))
-        for j in maxQNs:-1:(na + 1)
+        for j in maxQNs:-1:(na+1)
           ma[j] = ma[j - 1]
         end
         ma[na] = b[nb]
@@ -374,7 +374,7 @@ function removeqn(qn::QN, qn_name::String)
   end
 
   qn_data = data(qn)
-  for j in n_qn:(length(qn) - 1)
+  for j in n_qn:(length(qn)-1)
     qn_data = setindex(qn_data, qn_data[j + 1], j)
   end
   qn_data = setindex(qn_data, QNVal(), length(qn))

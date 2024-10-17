@@ -19,7 +19,7 @@ end
 function Graphs.SimpleDiGraph(tn::Vector{ITensor})
   nv = length(tn)
   g = SimpleDiGraph(nv)
-  for v1 in 1:nv, v2 in (v1 + 1):nv
+  for v1 in 1:nv, v2 in (v1+1):nv
     indsᵛ¹ᵛ² = commoninds(tn[v1], tn[v2])
     if !isempty(commoninds(tn[v1], tn[v2]))
       e = v1 => v2

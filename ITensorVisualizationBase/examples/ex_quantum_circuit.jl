@@ -8,7 +8,7 @@ layers = 10
 ndelete = 0
 
 s = siteinds("Qubit", N)
-layer(N, start) = [("CX", i, i + 1) for i in start:2:(N - 1)]
+layer(N, start) = [("CX", i, i + 1) for i in start:2:(N-1)]
 layer(N) = append!(layer(N, 1), layer(N, 2))
 layer_N = layer(N)
 gates = []

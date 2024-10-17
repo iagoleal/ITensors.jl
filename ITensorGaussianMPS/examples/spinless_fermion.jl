@@ -26,7 +26,7 @@ U = 1.0
 
 # Free fermion Hamiltonian
 os = OpSum()
-for n in 1:(N - 1)
+for n in 1:(N-1)
   os .+= -t, "Cdag", n, "C", n + 1
   os .+= -t, "Cdag", n + 1, "C", n
 end
@@ -46,7 +46,7 @@ println("Making free fermion starting MPS")
 @show maxlinkdim(ψ0)
 
 # Make an interacting Hamiltonian
-for n in 1:(N - 1)
+for n in 1:(N-1)
   os .+= U, "N", n, "N", n + 1
 end
 H = MPO(os, s)

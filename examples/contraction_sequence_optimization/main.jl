@@ -33,14 +33,14 @@ contract_labels(label1::Tuple, label2::Tuple) = (label1, label2)
 
 # Examples from Section III of https://arxiv.org/abs/1304.6112
 
-english_alphabet = Char.(97:(97 + 25))
+english_alphabet = Char.(97:(97+25))
 # Include Π (Char(928))
 # Include ϕ (Char(981))
 # Include ϵ (Char(1013))
 # Don't include \delta Char(948) since it conflicts with ITensors.δ
 # Don't include \pi Char(960) since it conflicts with MathConstants.π
 greek_alphabet = push!(vcat(Char.(945:947), Char.(949:959), Char.(961:969)), 928, 981, 1013)
-greek_alphabet_uppercase = Char.(913:(913 + 24))
+greek_alphabet_uppercase = Char.(913:(913+24))
 indlabels = vcat(english_alphabet, greek_alphabet, greek_alphabet_uppercase)
 
 # Add labels with overbars as well

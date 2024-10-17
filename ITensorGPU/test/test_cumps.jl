@@ -91,7 +91,7 @@ using ITensors, ITensorGPU, Test
     end
     @test cpu(phipsi)[] ≈ inner(phi, psi)
 
-    badsites = [Index(2) for n in 1:(N + 1)]
+    badsites = [Index(2) for n in 1:(N+1)]
     badpsi = randomCuMPS(badsites)
     @test_throws DimensionMismatch inner(phi, badpsi)
   end
@@ -179,9 +179,9 @@ end
 function basicRandomCuMPS(N::Int; dim=4)
   sites = [Index(2, "Site") for n in 1:N]
   M = MPS(sites)
-  links = [Index(dim, "n=$(n-1),Link") for n in 1:(N + 1)]
+  links = [Index(dim, "n=$(n-1),Link") for n in 1:(N+1)]
   M[1] = randomCuITensor(sites[1], links[2])
-  for n in 2:(N - 1)
+  for n in 2:(N-1)
     M[n] = randomCuITensor(links[n], sites[n], links[n + 1])
   end
   M[N] = randomCuITensor(links[N], sites[N])
@@ -203,7 +203,7 @@ end
     L = M[1] * prime(M[1], "Link")
     l = linkind(M, 1)
     @test cpu(L) ≈ delta(l, l') rtol = 1E-12
-    for j in 2:(c - 1)
+    for j in 2:(c-1)
       L = L * M[j] * prime(M[j], "Link")
       l = linkind(M, j)
       @test cpu(L) ≈ delta(l, l') rtol = 1E-12
@@ -213,7 +213,7 @@ end
     R = M[N] * prime(M[N], "Link")
     r = linkind(M, N - 1)
     @test cpu(R) ≈ delta(r, r') rtol = 1E-12
-    for j in reverse((c + 1):(N - 1))
+    for j in reverse((c+1):(N-1))
       R = R * M[j] * prime(M[j], "Link")
       r = linkind(M, j - 1)
       @test cpu(R) ≈ delta(r, r') rtol = 1E-12
@@ -231,7 +231,7 @@ end
     R = M[N] * prime(M[N], "Link")
     r = linkind(M, N - 1)
     @test cpu(R) ≈ delta(r, r') rtol = 1E-12
-    for j in reverse(2:(N - 1))
+    for j in reverse(2:(N-1))
       R = R * M[j] * prime(M[j], "Link")
       r = linkind(M, j - 1)
       @test cpu(R) ≈ delta(r, r') rtol = 1E-12

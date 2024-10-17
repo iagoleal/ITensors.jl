@@ -39,7 +39,7 @@ function MPO(::Type{ElT}, sites::Vector{<:Index}) where {ElT<:Number}
     return MPO(v)
   end
   space_ii = all(hasqns, sites) ? [QN() => 1] : 1
-  l = [Index(space_ii, "Link,l=$ii") for ii in 1:(N - 1)]
+  l = [Index(space_ii, "Link,l=$ii") for ii in 1:(N-1)]
   for ii in eachindex(sites)
     s = sites[ii]
     if ii == 1
@@ -721,7 +721,7 @@ function ITensors.contract(
   E = Vector{ITensor}(undef, n - 1)
 
   E[1] = ψ[1] * A[1] * A_c[1] * ψ_c[1]
-  for j in 2:(n - 1)
+  for j in 2:(n-1)
     E[j] = E[j - 1] * ψ[j] * A[j] * A_c[j] * ψ_c[j]
   end
   R = ψ[n] * A[n]
@@ -737,7 +737,7 @@ function ITensors.contract(
   ψ_out[n] = Ut
   R = R * dag(Ut) * ψ[n - 1] * A[n - 1]
   simR_c = simR_c * U * ψ_c[n - 1] * simA_c[n - 1]
-  for j in reverse(2:(n - 1))
+  for j in reverse(2:(n-1))
     # Determine smallest maxdim to use
     cip = commoninds(ψ[j], E[j - 1])
     ciA = commoninds(A[j], E[j - 1])
@@ -781,7 +781,7 @@ function _contract(::Algorithm"naive", A, ψ; truncate=true, kwargs...)
     ψ_out[j] = A[j] * ψ[j]
   end
 
-  for b in 1:(N - 1)
+  for b in 1:(N-1)
     Al = commoninds(A[b], A[b + 1])
     ψl = commoninds(ψ[b], ψ[b + 1])
     l = [Al..., ψl...]
@@ -838,7 +838,7 @@ function ITensors.contract(
   C = MPO(N)
   lCᵢ = Index[]
   R = ITensor(true)
-  for i in 1:(N - 2)
+  for i in 1:(N-2)
     RABᵢ = R * A[i] * B[i]
     left_inds = [sA[i]..., sB[i]..., lCᵢ...]
     C[i], R = factorize(
@@ -984,7 +984,7 @@ function sample(rng::AbstractRNG, M::MPO)
   s = siteinds(M)
   R = Vector{ITensor}(undef, N)
   R[N] = M[N] * δ(dag(s[N]))
-  for n in reverse(1:(N - 1))
+  for n in reverse(1:(N-1))
     R[n] = M[n] * δ(dag(s[n])) * R[n + 1]
   end
 

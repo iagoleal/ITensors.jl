@@ -2,7 +2,7 @@ using ITensorGPU, ITensors, Test, Random
 
 function heisenberg(n)
   opsum = OpSum()
-  for j in 1:(n - 1)
+  for j in 1:(n-1)
     opsum += 0.5, "S+", j, "S-", j + 1
     opsum += 0.5, "S-", j, "S+", j + 1
     opsum += "Sz", j, "Sz", j + 1

@@ -13,7 +13,7 @@ N = 6
 dmrg_kwargs = (; nsweeps=3, maxdim=10, cutoff=1e-13)
 
 opsum = OpSum()
-for j in 1:(N - 1)
+for j in 1:(N-1)
   opsum .+= "Sz", j, "Sz", j + 1
   opsum .+= 0.5, "S+", j, "S-", j + 1
   opsum .+= 0.5, "S-", j, "S+", j + 1

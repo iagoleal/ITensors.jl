@@ -327,7 +327,7 @@ function givens_rotations(v::AbstractVector{ElT}) where {ElT}
   N = length(v)
   gs = Circuit{ElT}([])
   r = v[1]
-  for n in reverse(1:(N - 1))
+  for n in reverse(1:(N-1))
     g, r = givens(v, n, n + 1)
     v = g * v
     lmul!(g, gs)
@@ -927,7 +927,7 @@ function interleave(M::AbstractMatrix)
   @assert size(M, 1) == size(M, 2)
   n = div(size(M, 1), 2)
   first_half = Vector(1:n)
-  second_half = Vector((n + 1):(2 * n))
+  second_half = Vector((n+1):(2*n))
   interleaved_inds = interleave(first_half, second_half)
   return M[interleaved_inds, interleaved_inds]
 end
@@ -940,7 +940,7 @@ function reverse_interleave(M::AbstractMatrix)
   @assert size(M, 1) == size(M, 2)
   n = div(size(M, 1), 2)
   first_half = Vector(1:n)
-  second_half = Vector((n + 1):(2 * n))
+  second_half = Vector((n+1):(2*n))
   interleaved_inds = interleave(first_half, second_half)
   ordered_inds = sortperm(interleaved_inds)
   return M[ordered_inds, ordered_inds]

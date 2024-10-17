@@ -231,7 +231,7 @@ end
 function _removetag!(ts::MTagSetStorage, ntags::Int, t)
   for n in 1:ntags
     if @inbounds ts[n] == t
-      for j in n:(ntags - 1)
+      for j in n:(ntags-1)
         @inbounds ts[j] = ts[j + 1]
       end
       @inbounds ts[ntags] = emptytag(IntTag)
@@ -277,7 +277,7 @@ function tagstring(T::TagSet)
   res = ""
   N = length(T)
   N == 0 && return res
-  for n in 1:(N - 1)
+  for n in 1:(N-1)
     res *= "$(Tag(data(T)[n])),"
   end
   res *= "$(Tag(data(T)[N]))"

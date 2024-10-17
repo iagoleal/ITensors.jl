@@ -50,7 +50,7 @@ using ITensors, ITensorGPU, Test
     end
     @test phiKpsi[] ≈ inner(phi', K, psi)
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badpsi = randomCuMPS(badsites)
     @test_throws DimensionMismatch inner(phi', K, badpsi)
 
@@ -59,12 +59,12 @@ using ITensors, ITensorGPU, Test
       mpo_tensors = ITensor[cuITensor() for ii in 1:N]
       mps_tensors = ITensor[cuITensor() for ii in 1:N]
       mps_tensors2 = ITensor[cuITensor() for ii in 1:N]
-      mpo_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N - 1)]
-      mps_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N - 1)]
+      mpo_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N-1)]
+      mps_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N-1)]
       mpo_tensors[1] = randomCuITensor(mpo_link_inds[1], sites[1], sites[1]')
       mps_tensors[1] = randomCuITensor(mps_link_inds[1], sites[1])
       mps_tensors2[1] = randomCuITensor(mps_link_inds[1], sites[1])
-      for ii in 2:(N - 1)
+      for ii in 2:(N-1)
         mpo_tensors[ii] = randomCuITensor(
           mpo_link_inds[ii], mpo_link_inds[ii - 1], sites[ii], sites[ii]'
         )
@@ -103,7 +103,7 @@ using ITensors, ITensorGPU, Test
     @test inner(phi', psi_out) ≈ inner(phi', K, psi)
     @test_throws MethodError contract(K', psi, method="fakemethod")
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badpsi = randomCuMPS(badsites)
     @test_throws DimensionMismatch contract(K, badpsi)
 
@@ -112,12 +112,12 @@ using ITensors, ITensorGPU, Test
       mpo_tensors = ITensor[ITensor() for ii in 1:N]
       mps_tensors = ITensor[ITensor() for ii in 1:N]
       mps_tensors2 = ITensor[ITensor() for ii in 1:N]
-      mpo_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N - 1)]
-      mps_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N - 1)]
+      mpo_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N-1)]
+      mps_link_inds = [Index(link_dim, "r$ii,Link") for ii in 1:(N-1)]
       mpo_tensors[1] = randomCuITensor(mpo_link_inds[1], sites[1], sites[1]')
       mps_tensors[1] = randomCuITensor(mps_link_inds[1], sites[1])
       mps_tensors2[1] = randomCuITensor(mps_link_inds[1], sites[1])
-      for ii in 2:(N - 1)
+      for ii in 2:(N-1)
         mpo_tensors[ii] = randomCuITensor(
           mpo_link_inds[ii], mpo_link_inds[ii - 1], sites[ii], sites[ii]'
         )
@@ -177,7 +177,7 @@ using ITensors, ITensorGPU, Test
     psi_kl_out = contract(K, contract(L, psil; maxdim=1); maxdim=1)
     @test inner(psik, KL, psil) ≈ inner(psik, psi_kl_out) atol = 5e-3
 
-    badsites = [Index(2, "Site") for n in 1:(N + 1)]
+    badsites = [Index(2, "Site") for n in 1:(N+1)]
     badL = randomCuMPO(badsites)
     @test_throws DimensionMismatch contract(K, badL)
   end

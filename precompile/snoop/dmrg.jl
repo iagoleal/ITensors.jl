@@ -6,7 +6,7 @@ let
   N = 4
   sites = siteinds("S=1", N)
   opsum = OpSum()
-  for j in 1:(N - 1)
+  for j in 1:(N-1)
     opsum .+= ("Sz", j, "Sz", j + 1)
     opsum .+= (0.5, "S+", j, "S-", j + 1)
     opsum .+= (0.5, "S-", j, "S+", j + 1)

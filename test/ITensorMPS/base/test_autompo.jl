@@ -19,7 +19,7 @@ function isingMPO(sites)::MPO
   H = MPO(sites)
   N = length(H)
   link = Vector{Index}(undef, N + 1)
-  for n in 1:(N + 1)
+  for n in 1:(N+1)
     link[n] = Index(3, "Link,Ising,l=$(n-1)")
   end
   for n in 1:N
@@ -41,11 +41,11 @@ function isingMPO(sites)::MPO
   return H
 end
 
-function heisenbergMPO(sites, h::Vector{Float64}, onsite::String="Sz")::MPO
+function heisenbergMPO(sites, h::Vector{Float64}; onsite::String="Sz")::MPO
   H = MPO(sites)
   N = length(H)
   link = Vector{Index}(undef, N + 1)
-  for n in 1:(N + 1)
+  for n in 1:(N+1)
     link[n] = Index(5, "Link,Heis,l=$(n-1)")
   end
   for n in 1:N
@@ -73,7 +73,7 @@ function NNheisenbergMPO(sites, J1::Float64, J2::Float64)::MPO
   N = length(H)
   link = Vector{Index}(undef, N + 1)
   if hasqns(sites[1])
-    for n in 1:(N + 1)
+    for n in 1:(N+1)
       link[n] = Index(
         [
           QN() => 1,
@@ -88,7 +88,7 @@ function NNheisenbergMPO(sites, J1::Float64, J2::Float64)::MPO
       )
     end
   else
-    for n in 1:(N + 1)
+    for n in 1:(N+1)
       link[n] = Index(8, "Link,H,l=$(n-1)")
     end
   end
@@ -124,7 +124,7 @@ function threeSiteIsingMPO(sites, h::Vector{Float64})::MPO
   H = MPO(sites)
   N = length(H)
   link = Vector{Index}(undef, N + 1)
-  for n in 1:(N + 1)
+  for n in 1:(N+1)
     link[n] = Index(4, "Link,l=$(n-1)")
   end
   for n in 1:N
@@ -148,7 +148,7 @@ function fourSiteIsingMPO(sites)::MPO
   H = MPO(sites)
   N = length(H)
   link = Vector{Index}(undef, N + 1)
-  for n in 1:(N + 1)
+  for n in 1:(N+1)
     link[n] = Index(5, "Link,l=$(n-1)")
   end
   for n in 1:N
@@ -283,7 +283,7 @@ end
     n = 5
     sites = siteinds("S=1/2", n)
     O1 = OpSum()
-    for j in 1:(n - 1)
+    for j in 1:(n-1)
       O1 += "Sz", j, "Sz", j + 1
     end
     O2 = OpSum()
@@ -341,7 +341,7 @@ end
 
   @testset "Ising" begin
     os = OpSum()
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       os += "Sz", j, "Sz", j + 1
     end
     sites = siteinds("S=1/2", N)
@@ -360,7 +360,7 @@ end
 
   @testset "Ising" begin
     os = OpSum()
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       os -= "Sz", j, "Sz", j + 1
     end
     sites = siteinds("S=1/2", N)
@@ -374,7 +374,7 @@ end
 
   @testset "Ising-Different Order" begin
     os = OpSum()
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       os += "Sz", j, "Sz", j + 1
     end
     sites = siteinds("S=1/2", N)
@@ -389,7 +389,7 @@ end
   @testset "Heisenberg" begin
     os = OpSum()
     h = rand(N) #random magnetic fields
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       os += "Sz", j, "Sz", j + 1
       os += 0.5, "S+", j, "S-", j + 1
       os += 0.5, "S-", j, "S+", j + 1
@@ -410,7 +410,7 @@ end
   @testset "Multiple Onsite Ops" begin
     sites = siteinds("S=1", N)
     os1 = OpSum()
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       os1 += "Sz", j, "Sz", j + 1
       os1 += 0.5, "S+", j, "S-", j + 1
       os1 += 0.5, "S-", j, "S+", j + 1
@@ -421,7 +421,7 @@ end
     Ha1 = MPO(os1, sites)
 
     os2 = OpSum()
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       os2 += "Sz", j, "Sz", j + 1
       os2 += 0.5, "S+", j, "S-", j + 1
       os2 += 0.5, "S-", j, "S+", j + 1
@@ -445,7 +445,7 @@ end
     # To test version of add! taking a coefficient
     add!(os, 1.0, "Sz", 1, "Sz", 2, "Sz", 3)
     @test length(os) == 1
-    for j in 2:(N - 2)
+    for j in 2:(N-2)
       add!(os, "Sz", j, "Sz", j + 1, "Sz", j + 2)
     end
     h = ones(N)
@@ -463,7 +463,7 @@ end
 
   @testset "Four-site ops" begin
     os = OpSum()
-    for j in 1:(N - 3)
+    for j in 1:(N-3)
       add!(os, "Sz", j, "Sz", j + 1, "Sz", j + 2, "Sz", j + 3)
     end
     sites = siteinds("S=1/2", N)
@@ -479,12 +479,12 @@ end
     os = OpSum()
     J1 = 1.0
     J2 = 0.5
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       add!(os, J1, "Sz", j, "Sz", j + 1)
       add!(os, J1 * 0.5, "S+", j, "S-", j + 1)
       add!(os, J1 * 0.5, "S-", j, "S+", j + 1)
     end
-    for j in 1:(N - 2)
+    for j in 1:(N-2)
       add!(os, J2, "Sz", j, "Sz", j + 2)
       add!(os, J2 * 0.5, "S+", j, "S-", j + 2)
       add!(os, J2 * 0.5, "S-", j, "S+", j + 2)
@@ -536,7 +536,7 @@ end
 
     @testset "Ising" begin
       os = OpSum()
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os += "Sz", j, "Sz", j + 1
       end
       sites = siteinds("S=1/2", N)
@@ -550,7 +550,7 @@ end
 
     @testset "Ising-Different Order" begin
       os = OpSum()
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os += "Sz", j + 1, "Sz", j
       end
       sites = siteinds("S=1/2", N)
@@ -565,7 +565,7 @@ end
     @testset "Heisenberg" begin
       os = OpSum()
       h = rand(N) #random magnetic fields
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os += "Sz", j, "Sz", j + 1
         os += 0.5, "S+", j, "S-", j + 1
         os += 0.5, "S-", j, "S+", j + 1
@@ -586,7 +586,7 @@ end
     @testset "Multiple Onsite Ops" begin
       sites = siteinds("S=1", N)
       os1 = OpSum()
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os1 += "Sz", j, "Sz", j + 1
         os1 += 0.5, "S+", j, "S-", j + 1
         os1 += 0.5, "S-", j, "S+", j + 1
@@ -597,7 +597,7 @@ end
       Ha1 = MPO(os1, sites)
 
       os2 = OpSum()
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os2 += "Sz", j, "Sz", j + 1
         os2 += 0.5, "S+", j, "S-", j + 1
         os2 += 0.5, "S-", j, "S+", j + 1
@@ -621,7 +621,7 @@ end
       # To test version of add! taking a coefficient
       os += 1.0, "Sz", 1, "Sz", 2, "Sz", 3
       @test length(os) == 1
-      for j in 2:(N - 2)
+      for j in 2:(N-2)
         os += "Sz", j, "Sz", j + 1, "Sz", j + 2
       end
       h = ones(N)
@@ -639,7 +639,7 @@ end
 
     @testset "Four-site ops" begin
       os = OpSum()
-      for j in 1:(N - 3)
+      for j in 1:(N-3)
         os += "Sz", j, "Sz", j + 1, "Sz", j + 2, "Sz", j + 3
       end
       sites = siteinds("S=1/2", N)
@@ -655,12 +655,12 @@ end
       os = OpSum()
       J1 = 1.0
       J2 = 0.5
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os += J1, "Sz", j, "Sz", j + 1
         os += J1 * 0.5, "S+", j, "S-", j + 1
         os += J1 * 0.5, "S-", j, "S+", j + 1
       end
-      for j in 1:(N - 2)
+      for j in 1:(N-2)
         os += J2, "Sz", j, "Sz", j + 2
         os += J2 * 0.5, "S+", j, "S-", j + 2
         os += J2 * 0.5, "S-", j, "S+", j + 2
@@ -731,7 +731,7 @@ end
 
     @testset "Ising" begin
       os = OpSum()
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os .+= "Sz", j, "Sz", j + 1
       end
       sites = siteinds("S=1/2", N)
@@ -745,7 +745,7 @@ end
 
     @testset "Ising-Different Order" begin
       os = OpSum()
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os .+= "Sz", j + 1, "Sz", j
       end
       sites = siteinds("S=1/2", N)
@@ -760,7 +760,7 @@ end
     @testset "Heisenberg" begin
       os = OpSum()
       h = rand(N) #random magnetic fields
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os .+= "Sz", j, "Sz", j + 1
         os .+= 0.5, "S+", j, "S-", j + 1
         os .+= 0.5, "S-", j, "S+", j + 1
@@ -781,7 +781,7 @@ end
     @testset "Multiple Onsite Ops" begin
       sites = siteinds("S=1", N)
       os1 = OpSum()
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os1 .+= "Sz", j, "Sz", j + 1
         os1 .+= 0.5, "S+", j, "S-", j + 1
         os1 .+= 0.5, "S-", j, "S+", j + 1
@@ -792,7 +792,7 @@ end
       Ha1 = MPO(os1, sites)
 
       os2 = OpSum()
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os2 .+= "Sz", j, "Sz", j + 1
         os2 .+= 0.5, "S+", j, "S-", j + 1
         os2 .+= 0.5, "S-", j, "S+", j + 1
@@ -816,7 +816,7 @@ end
       # To test version of add! taking a coefficient
       os .+= 1.0, "Sz", 1, "Sz", 2, "Sz", 3
       @test length(os) == 1
-      for j in 2:(N - 2)
+      for j in 2:(N-2)
         os .+= "Sz", j, "Sz", j + 1, "Sz", j + 2
       end
       h = ones(N)
@@ -834,7 +834,7 @@ end
 
     @testset "Four-site ops" begin
       os = OpSum()
-      for j in 1:(N - 3)
+      for j in 1:(N-3)
         os .+= "Sz", j, "Sz", j + 1, "Sz", j + 2, "Sz", j + 3
       end
       sites = siteinds("S=1/2", N)
@@ -850,12 +850,12 @@ end
       os = OpSum()
       J1 = 1.0
       J2 = 0.5
-      for j in 1:(N - 1)
+      for j in 1:(N-1)
         os .+= J1, "Sz", j, "Sz", j + 1
         os .+= J1 * 0.5, "S+", j, "S-", j + 1
         os .+= J1 * 0.5, "S-", j, "S+", j + 1
       end
-      for j in 1:(N - 2)
+      for j in 1:(N-2)
         os .+= J2, "Sz", j, "Sz", j + 2
         os .+= J2 * 0.5, "S+", j, "S-", j + 2
         os .+= J2 * 0.5, "S-", j, "S+", j + 2
@@ -1033,7 +1033,7 @@ end
     for use_qn in [false, true]
       sites = siteinds("S=1/2", N; conserve_qns=use_qn)
       os = OpSum()
-      for i in 1:(N - 1)
+      for i in 1:(N-1)
         os += +1im, "S+", i, "S-", i + 1
         os += -1im, "S-", i, "S+", i + 1
       end
@@ -1060,7 +1060,7 @@ end
       M = MPO([op(ops[n], sites[n]) for n in 1:length(sites)])
       q = flux(op(which_op, sites[j]))
       links = [Index([n < j ? q => 1 : QN() => 1], "Link,l=$n") for n in 1:N]
-      for n in 1:(N - 1)
+      for n in 1:(N-1)
         M[n] *= onehot(links[n] => 1)
         M[n + 1] *= onehot(dag(links[n]) => 1)
       end
@@ -1098,7 +1098,7 @@ end
     N = 2
     t = 1.0
     os = OpSum()
-    for n in 1:(N - 1)
+    for n in 1:(N-1)
       os .+= -t, "Cdag", n, "C", n + 1
       os .+= -t, "Cdag", n + 1, "C", n
     end
@@ -1136,12 +1136,12 @@ end
     sites = siteinds("HardCore", N)
 
     os = OpSum()
-    for j in 1:(N - 1)
+    for j in 1:(N-1)
       os += -t, "Adag", j, "A", j + 1
       os += -t, "A", j, "Adag", j + 1
       os += V1, "N", j, "N", j + 1
     end
-    for j in 1:(N - 2)
+    for j in 1:(N-2)
       os += V2, "N", j, "N", j + 2
     end
     H = MPO(os, sites)
@@ -1173,7 +1173,7 @@ end
     s = siteinds(dim, n)
     o = rand(dim, dim)
     os = OpSum()
-    for j in 1:(n - 1)
+    for j in 1:(n-1)
       os += copy(o), j, copy(o), j + 1
     end
     H1 = MPO(os, s)

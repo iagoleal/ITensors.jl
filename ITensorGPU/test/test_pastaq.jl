@@ -17,11 +17,11 @@ function ising_model(n; J=1.0, h)
 end
 
 Ry(θ) = [("Ry", j, (θ=θ[j],)) for j in 1:length(θ)]
-CNOT(n) = [("CNOT", j, j + 1) for j in 1:(n - 1)]
+CNOT(n) = [("CNOT", j, j + 1) for j in 1:(n-1)]
 function U(θ)
   nlayers = length(θ)
   Uθ = Tuple[]
-  for l in 1:(nlayers - 1)
+  for l in 1:(nlayers-1)
     Uθ = [Uθ; [Ry(θ[l]); CNOT(length(θ[l]))]]
   end
   Uθ = [Uθ; Ry(θ[nlayers])]

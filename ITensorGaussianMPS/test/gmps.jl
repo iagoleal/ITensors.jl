@@ -52,7 +52,7 @@ end
         2 .* ITensorGaussianMPS.reverse_interleave(Matrix(h_hopandpair))[
           (N + 1):end, (N + 1):end
         ]
-      ) - h_hop
+      ) - h_hop,
     ) .< eps(Float32),
   )
 end
@@ -126,12 +126,12 @@ end
   for (Delta, t) in zip(Deltas, ts)
     t = isreal(t) ? real(t) : t
     os_h = OpSum()
-    for n in 1:(N - 1)
+    for n in 1:(N-1)
       os_h .+= -t, "Cdag", n, "C", n + 1
       os_h .+= -t', "Cdag", n + 1, "C", n
     end
     os_p = OpSum()
-    for n in 1:(N - 1)
+    for n in 1:(N-1)
       os_p .+= Delta / 2.0, "Cdag", n, "Cdag", n + 1
       os_p .+= -Delta / 2.0, "Cdag", n + 1, "Cdag", n
       os_p .+= -Delta / 2.0, "C", n, "C", n + 1

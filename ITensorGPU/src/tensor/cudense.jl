@@ -51,7 +51,7 @@ end
 function permutedims!!(
   B::Tensor{ElT,N,StoreT,IndsB},
   A::Tensor{ElT,N,StoreT,IndsA},
-  perm::NTuple{N,Int},
+  perm::NTuple{N,Int};
   f::Function=(r, t) -> permute!(r, t),
 ) where {N,ElT,IndsB,IndsA,StoreT<:CuDense{ElT}}
   Ais = inds(A)
@@ -121,7 +121,7 @@ function _contract_scalar!(
   T₁::CuDenseTensor,
   labelsT₁,
   T₂::CuDenseTensor,
-  labelsT₂,
+  labelsT₂;
   α=one(ElR),
   β=zero(ElR),
 ) where {ElR,NR}
@@ -146,7 +146,7 @@ function _gemm_contract!(
   CT::DenseTensor{El,NC},
   AT::DenseTensor{El,NA},
   BT::DenseTensor{El,NB},
-  props::ContractionProperties,
+  props::ContractionProperties;
   α::Number=one(El),
   β::Number=zero(El),
 ) where {El,NC,NA,NB}
@@ -216,7 +216,7 @@ function _contract!(
   CT::CuDenseTensor{El,NC},
   AT::CuDenseTensor{El,NA},
   BT::CuDenseTensor{El,NB},
-  props::ContractionProperties,
+  props::ContractionProperties;
   α::Number=one(El),
   β::Number=zero(El),
 ) where {El,NC,NA,NB}

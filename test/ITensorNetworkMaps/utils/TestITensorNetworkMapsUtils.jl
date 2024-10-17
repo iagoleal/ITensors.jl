@@ -27,7 +27,7 @@ ITensors.dag(tn::InfTN) = InfTN(dag.(tn.data))
 function ITensors.prime(::typeof(linkinds), tn::InfTN)
   tn_p = copy(tn)
   N = length(tn)
-  for i in 1:N, j in (i + 1):N
+  for i in 1:N, j in (i+1):N
     l = commoninds(tn[i], tn[j])
     tn_p[i] = prime(tn_p[i]; inds=l)
     tn_p[j] = prime(tn_p[j]; inds=l)

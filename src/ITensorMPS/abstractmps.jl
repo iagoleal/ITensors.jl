@@ -118,7 +118,7 @@ s = siteinds("S=½", 5)
 ```
 """
 function ortho_lims(ψ::AbstractMPS)
-  return (leftlim(ψ) + 1):(rightlim(ψ) - 1)
+  return (leftlim(ψ)+1):(rightlim(ψ)-1)
 end
 
 """
@@ -199,7 +199,7 @@ end
 ```
 """
 macro preserve_ortho(ψ, block)
-  quote
+  return quote
     if $(esc(ψ)) isa AbstractMPS
       local ortho_limsψ = ortho_lims($(esc(ψ)))
     else
@@ -362,10 +362,10 @@ function linkinds(M::AbstractMPS, j::Integer)
   return commoninds(M[j], M[j + 1])
 end
 
-linkinds(ψ::AbstractMPS) = [linkind(ψ, b) for b in 1:(length(ψ) - 1)]
+linkinds(ψ::AbstractMPS) = [linkind(ψ, b) for b in 1:(length(ψ)-1)]
 
 function linkinds(::typeof(all), ψ::AbstractMPS)
-  return IndexSet[linkinds(ψ, b) for b in 1:(length(ψ) - 1)]
+  return IndexSet[linkinds(ψ, b) for b in 1:(length(ψ)-1)]
 end
 
 #
@@ -431,7 +431,7 @@ function insertlinkinds(ψ::AbstractMPS)
   ψ = copy(ψ)
   space = hasqns(ψ) ? [QN() => 1] : 1
   linkind(b::Integer) = Index(space; tags=defaultlinktags(b))
-  for b in 1:(length(ψ) - 1)
+  for b in 1:(length(ψ)-1)
     if length(linkinds(ψ, b)) == 0
       lb = ITensor(1, linkind(b))
       @preserve_ortho ψ begin
@@ -689,7 +689,7 @@ end
 # TODO: change kwarg from `set_limits` to `preserve_ortho`
 function map!(f::Function, M::AbstractMPS; set_limits::Bool=true)
   for i in eachindex(M)
-    M[i, set_limits=set_limits] = f(M[i])
+    M[i, set_limits = set_limits] = f(M[i])
   end
   return M
 end
@@ -978,7 +978,7 @@ function linkdim(ψ::AbstractMPS, b::Integer)
   return dim(l)
 end
 
-linkdims(ψ::AbstractMPS) = [linkdim(ψ, b) for b in 1:(length(ψ) - 1)]
+linkdims(ψ::AbstractMPS) = [linkdim(ψ, b) for b in 1:(length(ψ)-1)]
 
 function inner_mps_mps_deprecation_warning()
   return """
@@ -1296,7 +1296,7 @@ of the orthogonality center to avoid numerical overflow in the case of diverging
 See also [`normalize!`](@ref), [`norm`](@ref), [`lognorm`](@ref).
 """
 function normalize(M::AbstractMPS; (lognorm!)=[])
-  return normalize!(deepcopy_ortho_center(M); (lognorm!)=lognorm!)
+  return normalize!(deepcopy_ortho_center(M); (lognorm!)=(lognorm!))
 end
 
 """
@@ -1369,7 +1369,7 @@ end
 function _add_maxlinkdims(ψ⃗::AbstractMPS...)
   N = length(ψ⃗[1])
   maxdims = Vector{Int}(undef, N - 1)
-  for b in 1:(N - 1)
+  for b in 1:(N-1)
     maxdims[b] = sum(ψ -> linkdim(ψ, b), ψ⃗)
   end
   return maxdims
@@ -1459,7 +1459,7 @@ function +(::Algorithm"directsum", ψ⃗::MPST...) where {MPST<:AbstractMPS}
   )
   ljm_prev = lj
   ϕ[j] = ϕj
-  for j in 2:(n - 1)
+  for j in 2:(n-1)
     l⃗jm = map(ψᵢ -> linkind(ψᵢ, j - 1), ψ⃗)
     l⃗j = map(ψᵢ -> linkind(ψᵢ, j), ψ⃗)
     ϕj, (ljm, lj) = directsum(
@@ -1677,7 +1677,7 @@ function truncate!(
   orthogonalize!(M, last(site_range))
 
   # Perform truncations in a right-to-left sweep
-  for j in reverse((first(site_range) + 1):last(site_range))
+  for j in reverse((first(site_range)+1):last(site_range))
     rinds = uniqueinds(M[j], M[j - 1])
     ltags = tags(commonind(M[j], M[j - 1]))
     U, S, V = svd(M[j], rinds; lefttags=ltags, kwargs...)
@@ -1937,7 +1937,7 @@ function (::Type{MPST})(
   # TODO: To minimize work, loop from
   # 1:orthocenter and reverse(orthocenter:N)
   # so the orthogonality center is set correctly.
-  for n in 1:(N - 1)
+  for n in 1:(N-1)
     Lis = IndexSet(sites[n])
     if !isnothing(l)
       Lis = unioninds(Lis, l)
@@ -1976,7 +1976,7 @@ function swapbondsites(ψ::AbstractMPS, b::Integer; ortho="right", kwargs...)
   elseif rightlim(ψ) > b + 2
     ψ = orthogonalize(ψ, b + 1)
   end
-  ψ[b:(b + 1), orthocenter=orthocenter, perm=[2, 1], kwargs...] = ψ[b] * ψ[b + 1]
+  ψ[b:(b + 1), orthocenter = orthocenter, perm = [2, 1], kwargs...] = ψ[b] * ψ[b + 1]
   return ψ
 end
 
@@ -1995,10 +1995,10 @@ function movesite(
   n1, n2 = n1n2
   n1 == n2 && return copy(ψ)
   ψ = orthogonalize(ψ, n2)
-  r = n1:(n2 - 1)
+  r = n1:(n2-1)
   ortho = "left"
   if n1 > n2
-    r = reverse(n2:(n1 - 1))
+    r = reverse(n2:(n1-1))
     ortho = "right"
   end
   for n in r
@@ -2013,9 +2013,9 @@ end
 function _movesite(ns::Vector{Int}, n1n2::Pair{Int,Int})
   n1, n2 = n1n2
   n1 == n2 && return copy(ns)
-  r = n1:(n2 - 1)
+  r = n1:(n2-1)
   if n1 > n2
-    r = reverse(n2:(n1 - 1))
+    r = reverse(n2:(n1-1))
   end
   for n in r
     ns = replace(ns, n => n + 1, n + 1 => n)
