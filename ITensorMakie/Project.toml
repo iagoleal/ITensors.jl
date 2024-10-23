@@ -12,7 +12,7 @@ NetworkLayout = "46757867-2c16-5918-afeb-47bfcb05e46a"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 
 [compat]
-Colors = "0.12.8"
+Colors = "0.12.8, 0.13"
 GraphMakie = "0.3.0, 0.4, 0.5"
 Graphs = "1.4.1"
 ITensorVisualizationBase = "0.1.5"
