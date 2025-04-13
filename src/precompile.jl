@@ -189,9 +189,7 @@ function _precompile_()
   indextype(StorageType::Type{Dense}) = Index{Int}
   indextype(StorageType::Type{BlockSparse}) = Index{Vector{Pair{QN,Int64}}}
   for N1 in Ns,
-    N2 in Ns,
-    ElType1 in ElTypes,
-    ElType2 in ElTypes,
+    N2 in Ns, ElType1 in ElTypes, ElType2 in ElTypes,
     StorageType in StorageTypes
 
     IndexType1 = indextype(StorageType)

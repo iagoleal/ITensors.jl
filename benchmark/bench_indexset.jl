@@ -40,10 +40,10 @@ suite["set_functions"]["uniqueinds"] = BenchmarkGroup()
 suite["set_functions"]["uniqueinds"]["nofilter2"] = @benchmarkable uniqueinds($Iijk, $Ikl)
 suite["set_functions"]["uniqueinds"]["nofilter0"] = @benchmarkable uniqueinds($Iij, $Iijk)
 suite["set_functions"]["uniqueinds"]["filter_tags"] = @benchmarkable uniqueinds(
-  $Iijk, $Ikl; tags=$(ts"i")
+  $Iijk, $Ikl; tags=($(ts"i"))
 )
 suite["set_functions"]["uniqueinds"]["filter_not_tags"] = @benchmarkable uniqueinds(
-  $Iijk, $Ikl; tags=$(not("i"))
+  $Iijk, $Ikl; tags=($(not("i")))
 )
 suite["set_functions"]["uniqueinds"]["3_inputs"] = @benchmarkable uniqueinds(
   $Iijk, $Ijl, $Ikl
