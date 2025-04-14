@@ -10,7 +10,7 @@ is_cu(::Type{<:Array}) = false
 is_cu(::Type{<:CuArray}) = true
 
 # Handle Array wrappers like `ReshapedArray`.
-@traitfn function is_cu(arraytype::Type{T}) where {T; IsWrappedArray{T}}
+@traitfn function is_cu(arraytype::Type{T}) where {T;IsWrappedArray{T}}
   return is_cu(parenttype(arraytype))
 end
 
